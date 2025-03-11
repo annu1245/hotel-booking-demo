@@ -23,6 +23,8 @@ axiosInstance.interceptors.request.use(
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        config.headers["Time-Zone"] = timeZone;
         return config;
     },
     (error) => Promise.reject(error)
@@ -32,15 +34,14 @@ axiosInstance.interceptors.request.use(
  * Response interceptor
  */
 axiosInstance.interceptors.response.use(
-    (response) => response,
+    (response) => response.data,
     async (error) => {
         const originalRequest = error.config;
         if (error?.response?.status === 401 && originalRequest.url !== LOGIN_API_URL) {
-            window.location.href = '/logout';
+            window.location.href = "/logout";
         }
         return Promise.reject(error);
     }
 );
 
 export default axiosInstance;
-

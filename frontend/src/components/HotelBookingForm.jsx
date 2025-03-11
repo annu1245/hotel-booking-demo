@@ -6,10 +6,11 @@ const HotelBookingForm = () => {
     const [selectedHotel, setSelectedHotel] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bookingDetails, setBookingDetails] = useState({
-        datetime: "",
+        checkIn: "",
+        checkOut: "",
         guests: "",
     });
-    const { bookingResponse, bookHotel, errorMessage, setErrorMessage } = useBooking()
+    const { bookingResponse, bookHotel, errorMessage, setErrorMessage } = useBooking();
 
     const handleBook = (hotel) => {
         setSelectedHotel(hotel);
@@ -18,7 +19,7 @@ const HotelBookingForm = () => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setBookingDetails({ datetime: "", guests: "" });
+        setBookingDetails({ checkIn: "", checkOut: "", guests: "" });
         setErrorMessage("");
     };
 
@@ -26,19 +27,35 @@ const HotelBookingForm = () => {
         setBookingDetails({ ...bookingDetails, [e.target.name]: e.target.value });
     };
 
+    const validateDates = () => {
+        if (!bookingDetails.checkIn || !bookingDetails.checkOut) {
+            setErrorMessage("Please select both check-in and check-out dates/times.");
+            return false;
+        }
+
+        if (new Date(bookingDetails.checkOut) <= new Date(bookingDetails.checkIn)) {
+            setErrorMessage("Check-out date/time must be after check-in date/time.");
+            return false;
+        }
+
+        setErrorMessage("");
+        return true;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await bookHotel({
-          hotelId: selectedHotel.id,
-          ...bookingDetails
-        });
+        if (validateDates()) {
+            await bookHotel({
+                hotelId: selectedHotel.id,
+                ...bookingDetails,
+            });
+        }
     };
 
     useEffect(() => {
-      console.log("🚀 ~ HotelBookingForm.jsx:39 ~ useEffect ~ bookingResponse:", bookingResponse);
-      if (bookingResponse) {
-        handleCloseModal();
-      }
+        if (bookingResponse) {
+            handleCloseModal();
+        }
     }, [bookingResponse]);
 
     return (
@@ -71,8 +88,12 @@ const HotelBookingForm = () => {
                         {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Date Time:</label>
-                                <input type="datetime-local" name="datetime" value={bookingDetails.datetime} onChange={handleInputChange} className="mt-1 p-2 border rounded-md w-full" required />
+                                <label className="block text-sm font-medium text-gray-700">Check-in Date/Time:</label>
+                                <input type="datetime-local" name="checkIn" value={bookingDetails.checkIn} onChange={handleInputChange} className="mt-1 p-2 border rounded-md w-full" required />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Check-out Date/Time:</label>
+                                <input type="datetime-local" name="checkOut" value={bookingDetails.checkOut} onChange={handleInputChange} className="mt-1 p-2 border rounded-md w-full" required />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Number of Guests:</label>

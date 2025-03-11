@@ -15,7 +15,7 @@ export default function useBooking() {
             if (error.response && error.response.data.error) {
                 setErrorMessage(error.response.data.error);
             } else {
-                setErrorMessage("Login failed. Please try again.");
+                setErrorMessage("Something went wrong, please try again later.");
             }
         }
     };
