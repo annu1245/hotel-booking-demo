@@ -1,0 +1,4 @@
+[
+  { "id": 1, "name": "Luxury Resort", "location": "Goa", "price": 5000 },
+  { "id": 2, "name": "Mountain View Hotel", "location": "Shimla", "price": 3000 }
+]
