@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import hotels from "../data/hotels.json";
 import useBooking from "../context/useBooking";
+import toast from "react-hot-toast";
 
 const HotelBookingForm = () => {
     const [selectedHotel, setSelectedHotel] = useState({});
@@ -10,7 +11,7 @@ const HotelBookingForm = () => {
         checkOut: "",
         guests: "",
     });
-    const { bookingResponse, bookHotel, errorMessage, setErrorMessage } = useBooking();
+    const { bookingResponse, bookHotel } = useBooking();
 
     const handleBook = (hotel) => {
         setSelectedHotel(hotel);
@@ -20,7 +21,6 @@ const HotelBookingForm = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setBookingDetails({ checkIn: "", checkOut: "", guests: "" });
-        setErrorMessage("");
     };
 
     const handleInputChange = (e) => {
@@ -29,16 +29,15 @@ const HotelBookingForm = () => {
 
     const validateDates = () => {
         if (!bookingDetails.checkIn || !bookingDetails.checkOut) {
-            setErrorMessage("Please select both check-in and check-out dates/times.");
+            toast.error("Please select both check-in and check-out dates/times.");
             return false;
         }
 
         if (new Date(bookingDetails.checkOut) <= new Date(bookingDetails.checkIn)) {
-            setErrorMessage("Check-out date/time must be after check-in date/time.");
+            toast.error("Check-out date/time must be after check-in date/time.");
             return false;
         }
 
-        setErrorMessage("");
         return true;
     };
 
@@ -85,7 +84,6 @@ const HotelBookingForm = () => {
                     <div className="absolute inset-0 bg-black opacity-20"></div>
                     <div className="bg-white p-6 rounded-lg shadow-lg w-96 z-10 relative">
                         <h3 className="text-xl font-semibold mb-4">Booking Details for {selectedHotel.name}</h3>
-                        {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Check-in Date/Time:</label>

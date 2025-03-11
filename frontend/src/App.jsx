@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
 import AuthMiddleware from "./middleware/AuthMiddleware";
 import PageNotFound from "./pages/NotFound";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                         </div>
                     </nav>
                     <main className="container mx-auto p-4">
+                        <Toaster />
                         <Routes>
                             <Route path="*" element={<PageNotFound />} />
                             <Route path="/register" element={<Register />} />
