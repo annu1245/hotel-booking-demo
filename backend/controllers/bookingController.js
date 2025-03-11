@@ -41,6 +41,24 @@ exports.createBooking = async (req, res) => {
         });
         return res.json(booking);
     } catch (error) {
-        res.status(500).json({ error: "Something went wrong, please try again later." });
+        return res.status(500).json({ error: "Something went wrong, please try again later." });
+    }
+};
+
+exports.getBookings = async (req, res) => {
+    try {
+        const userId = getTokenValue(req);
+        const bookedHotels = await prisma.hotelBooking.findMany({
+            select: {
+                hotelId: true,
+                guestCount: true,
+            },
+            where: {
+                userId: parseInt(userId),
+            },
+        });
+        return res.json(bookedHotels);
+    } catch (error) {
+        return res.status(500).json({ error: "Something went wrong, please try again later." });;
     }
 };
