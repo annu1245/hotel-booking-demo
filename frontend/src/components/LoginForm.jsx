@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Assuming you have AuthContext
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,12 +13,11 @@ const Login = () => {
     e.preventDefault();
     setError(''); // Clear previous errors
     try {
-      const response = await axios.post('/auth/login', { email, password });
-      login(response.data); // Store user data/token in context
+      await login({ email, password }); // Login
       navigate('/'); // Redirect to home or dashboard
-    } catch (err) {
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setError(error.response.data.error);
       } else {
         setError('Login failed. Please try again.');
       }
@@ -51,6 +49,9 @@ const Login = () => {
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">New account? <a href="/register" className='text-blue-400'>register</a></label>
           </div>
           <div>
             <button

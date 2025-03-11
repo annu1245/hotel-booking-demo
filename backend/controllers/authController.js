@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const generateToken = require('../helpers/auth');
 
 exports.register = async (req, res) => {
   const { email, password } = req.body;
@@ -25,9 +25,11 @@ exports.register = async (req, res) => {
       data: { email, password: hashedPassword },
     });
 
-    res.status(201).json({ message: 'User registered successfully' });
+    const token = generateToken(user);
+
+    return res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -46,9 +48,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = generateToken(user);
 
     res.json({ token });
   } catch (error) {

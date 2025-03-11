@@ -11,10 +11,10 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-app.use('/bookings', bookingRoutes);
-app.use('/hotels', hotelRoutes);
-app.use('/aadhaar', aadhaarRoutes); 
+app.use('/api/auth', authRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/hotels', hotelRoutes);
+app.use('/api/aadhaar', aadhaarRoutes); 
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

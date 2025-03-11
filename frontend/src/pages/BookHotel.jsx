@@ -1,2 +1,4 @@
 import HotelBookingForm from '../components/HotelBookingForm';
-export default () => <HotelBookingForm />;
+
+const BookHotel = () => <HotelBookingForm />;
+export default BookHotel

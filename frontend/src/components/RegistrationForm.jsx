@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/auth/register', { email, password });
-      console.log(response.data);
-      alert('Registration successful');
+      await register({ email, password }); // Register
+      navigate('/'); // Redirect to home or dashboard
       setErrorMessage('');
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage(error.response.data.error);
       } else {
-        console.error('Registration error:', error);
         setErrorMessage('Registration failed. Please try again.');
       }
     }
@@ -48,6 +49,9 @@ const RegistrationForm = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border rounded-md"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Already account? <a href="/login" className='text-blue-400'>login</a></label>
           </div>
           <button
             type="submit"

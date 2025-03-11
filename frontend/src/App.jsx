@@ -5,8 +5,6 @@ import BookHotel from './pages/BookHotel';
 import Checkin from './pages/Checkin';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
-// import ProtectedRoute from './components/ProtectedRoute';
-// import ProtectedPage from './pages/ProtectedPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 

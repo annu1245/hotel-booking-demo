@@ -17,7 +17,7 @@ exports.createHotel = async (req, res) => {
             data: {
                 name,
                 location,
-                price:parseInt(price),
+                price: parseInt(price),
             },
         });
         res.json(hotel);

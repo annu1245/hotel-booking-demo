@@ -7,7 +7,7 @@ const WebCheckinForm = () => {
 
   const handleCheckAadhaar = async (aadhaarNumber) => {
     try {
-      const response = await axios.post('http://localhost:3000/aadhaar/check', { aadhaarNumber });
+      const response = await axios.post('/api/aadhaar/check', { aadhaarNumber });
       setAadhaarValidations({ ...aadhaarValidations, [aadhaarNumber]: response.data });
     } catch (error) {
       setAadhaarValidations({ ...aadhaarValidations, [aadhaarNumber]: { valid: false, error: 'Check failed' } });

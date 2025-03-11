@@ -1,3 +1,4 @@
-import Login from '../components/LoginForm.jsx';
+import LoginForm from "../components/LoginForm.jsx";
 
-export default () => <Login />;
+const Login = () => <LoginForm />;
+export default Login
