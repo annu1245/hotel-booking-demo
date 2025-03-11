@@ -1,11 +1,20 @@
 const jwt = require('jsonwebtoken');
 
 const generateToken = (user) => {
-    console.log("🚀 ~ auth.js:7 ~ process.env.JWT_SECRET:", process.env.JWT_SECRET);
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
+        expiresIn: '1d',
     });
     return token;
 }
 
-module.exports = generateToken;
+const getTokenValue = (request) => {
+    const authHeader = request.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    const { userId } = jwt.decode(token) || {};
+    return userId;
+}
+
+module.exports = {
+    generateToken,
+    getTokenValue,
+};

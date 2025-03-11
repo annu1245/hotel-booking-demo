@@ -1,4 +1,3 @@
-// pages/Logout.jsx
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -9,7 +8,9 @@ const Logout = () => {
 
   useEffect(() => {
     logout();
-    navigate('/login');
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
   }, [logout, navigate]);
 
   return <p>Logging out...</p>;

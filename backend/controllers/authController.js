@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const generateToken = require('../helpers/auth');
+const { generateToken } = require('../helpers/auth');
 
 exports.register = async (req, res) => {
   const { email, password } = req.body;
@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
 
     return res.json({ token });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Something went wrong, please try again later." });
   }
 };
 
@@ -52,6 +52,6 @@ exports.login = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Something went wrong, please try again later." });
   }
 };

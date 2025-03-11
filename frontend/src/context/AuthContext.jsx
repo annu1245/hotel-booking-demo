@@ -1,6 +1,5 @@
-// context/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from './../middleware/axiosClient';
 
 const AuthContext = createContext();
 
@@ -17,16 +16,14 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (credentials) => {
-        const response = await axios.post("/api/auth/login", credentials);
-        const userData = response.data;
+        const userData = await axiosInstance.post("/api/auth/login", credentials);
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
         return userData;
     };
 
     const register = async (credentials) => {
-        const response = await axios.post("/api/auth/register", credentials);
-        const userData = response.data;
+        const userData = await axiosInstance.post("/api/auth/register", credentials);
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
         return userData;

@@ -1,4 +1,7 @@
 [
   { "id": 1, "name": "Luxury Resort", "location": "Goa", "price": 5000 },
-  { "id": 2, "name": "Mountain View Hotel", "location": "Shimla", "price": 3000 }
+  { "id": 2, "name": "Mountain View Hotel", "location": "Shimla", "price": 3000 },
+  { "id": 3, "name": "Seashore", "location": "Mumbai", "price": 2500 },
+  { "id": 4, "name": "Lake View", "location": "Nainital", "price": 4000 },
+  { "id": 5, "name": "Greenery View", "location": "Konkan", "price": 1000 }
 ]

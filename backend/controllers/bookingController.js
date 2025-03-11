@@ -1,18 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { getTokenValue } = require('../helpers/auth');
 
 exports.createBooking = async (req, res) => {
-    const { userId, hotelId, aadhaarNumbers } = req.body;
+    const { hotelId, datetime, guests } = req.body;
+    const userId = getTokenValue(req);
     try {
         const booking = await prisma.hotelBooking.create({
             data: {
-                userId: parseInt(userId),
+                userId: userId,
                 hotelId: parseInt(hotelId),
-                aadhaarNumbers: aadhaarNumbers,
+                dateTime: new Date(datetime),
+                guestCount: parseInt(guests),
             },
         });
         res.json(booking);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Something went wrong, please try again later." });
     }
 };

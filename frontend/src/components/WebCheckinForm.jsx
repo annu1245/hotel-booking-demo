@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './../middleware/axiosClient';
 
 const WebCheckinForm = () => {
   const [aadhaarNumbers, setAadhaarNumbers] = useState('');
@@ -7,7 +7,7 @@ const WebCheckinForm = () => {
 
   const handleCheckAadhaar = async (aadhaarNumber) => {
     try {
-      const response = await axios.post('/api/aadhaar/check', { aadhaarNumber });
+      const response = await axiosInstance.post('/api/aadhaar/check', { aadhaarNumber });
       setAadhaarValidations({ ...aadhaarValidations, [aadhaarNumber]: response.data });
     } catch (error) {
       setAadhaarValidations({ ...aadhaarValidations, [aadhaarNumber]: { valid: false, error: 'Check failed' } });

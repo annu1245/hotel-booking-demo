@@ -14,14 +14,27 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+  id               Int                @id @default(autoincrement())
+  email            String             @unique
+  password         String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model HotelBooking {
-  id        Int    @id @default(autoincrement())
-  userId    Int
-  hotelId   Int
-  aadhaarNumbers String
+  id               Int                @id @default(autoincrement())
+  userId           Int
+  hotelId          Int
+  dateTime         DateTime
+  guestCount       Int                @default(1)
+  createdAt        DateTime?          @default(now())
+  updatedAt        DateTime?          @updatedAt
+}
+
+model HotelCheckIn {
+  id               Int                @id @default(autoincrement())
+  hotelBookingId   Int
+  aadhaarNumber    String
+  createdAt        DateTime?          @default(now())
+  updatedAt        DateTime?          @updatedAt
 }
