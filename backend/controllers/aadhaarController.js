@@ -15,11 +15,15 @@ exports.getAadhaars = async (req, res) => {
     const { hotelBookingId } = req.params;
     const checkIns = await prisma.hotelCheckIn.findMany({
       select: {
+        id: true,
         hotelBookingId: true,
         aadhaarNumber: true,
       },
       where: {
         hotelBookingId: parseInt(hotelBookingId),
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
     return res.json(checkIns);
@@ -29,11 +33,22 @@ exports.getAadhaars = async (req, res) => {
 };
 
 exports.storeAadhaars = async (req, res) => {
-  // TODO
-  /* try {
-    const { hotelBookingId } = req.body;
-    return res.json(checkIns);
+  try {
+    const { aadhaars } = req.body;
+    for (const aadhaar of aadhaars) {
+      const { id, aadhaarNumber } = aadhaar;
+
+      await prisma.hotelCheckIn.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          aadhaarNumber
+        }
+      })
+    }
+    return res.json({ aadhaars });
   } catch (error) {
     return res.status(500).json({ error: "Something went wrong, please try again later." });;
-  } */
+  }
 };

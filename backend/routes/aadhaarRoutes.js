@@ -6,6 +6,6 @@ const authMiddleware = require('../middleware/authMiddleware.js');
 
 router.post('/check', authMiddleware, checkAadhaar);
 router.get('/:hotelBookingId', authMiddleware, getAadhaars);
-router.post('/:hotelBookingId', authMiddleware, storeAadhaars);
+router.post('/', authMiddleware, storeAadhaars);
 
 module.exports = router;

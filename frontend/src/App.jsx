@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Register from "./pages/Register";
 import BookHotel from "./pages/BookHotel";
-import Checkin from "./pages/Checkin";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -34,7 +33,6 @@ function App() {
                             <Route path="/login" element={<Login />} />
                             <Route path="/logout" element={<Logout />} />
                             <Route path="/" element={<AuthMiddleware component={<BookHotel />} />} />
-                            <Route path="/checkin" element={<AuthMiddleware component={<Checkin />} />} />
                         </Routes>
                     </main>
                 </div>
@@ -58,11 +56,6 @@ function NavigationLinks() {
                     <li>
                         <Link to="/" className="hover:text-gray-300">
                             Book Hotel
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/checkin" className="hover:text-gray-300">
-                            Check-in
                         </Link>
                     </li>
                 </>

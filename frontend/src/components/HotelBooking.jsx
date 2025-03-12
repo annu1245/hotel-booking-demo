@@ -4,7 +4,7 @@ import useBooking from "../context/useBooking";
 import BookHotelPopUp from "./BookHotelPopUp";
 import CheckInPopUp from "./CheckInPopUp";
 
-const HotelBookingForm = () => {
+const HotelBooking = () => {
     const [selectedHotel, setSelectedHotel] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -51,7 +51,7 @@ const HotelBookingForm = () => {
                                         return match
                                     }) && (
                                         <button onClick={() => handleBook(hotel, AADHAAR_POPUP)} className="px-6 py-3 mx-5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-300">
-                                            Check-ins
+                                            Aadhaar
                                         </button>
                                     )}
                                     <button onClick={() => handleBook(hotel, BOOKING_POPUP)} className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">
@@ -80,4 +80,4 @@ const HotelBookingForm = () => {
     );
 };
 
-export default HotelBookingForm;
+export default HotelBooking;

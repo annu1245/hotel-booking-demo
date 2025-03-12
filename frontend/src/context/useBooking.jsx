@@ -51,10 +51,10 @@ export default function useBooking() {
         }
     };
 
-    const storeAadhaars = async (hotelBookingId, payload) => {
+    const updateAadhaars = async (payload) => {
         setStoreAadhaarsResponse(null);
         try {
-            const response = await axiosInstance.post("/api/aadhaar", payload, { params: { hotelBookingId } });
+            const response = await axiosInstance.post("/api/aadhaar", payload);
             setStoreAadhaarsResponse(response);
         } catch (error) {
             if (error.response && error.response.data.error) {
@@ -65,5 +65,5 @@ export default function useBooking() {
         }
     };
 
-    return { bookingResponse, bookHotel, bookingsResponse, getBookings, aadhaarsResponse, getAadhaars, storeAadhaarsResponse, storeAadhaars };
+    return { bookingResponse, bookHotel, bookingsResponse, getBookings, aadhaarsResponse, getAadhaars, storeAadhaarsResponse, updateAadhaars };
 }

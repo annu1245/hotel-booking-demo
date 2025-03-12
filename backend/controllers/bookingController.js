@@ -30,15 +30,26 @@ exports.createBooking = async (req, res) => {
             return res.status(409).json({ error: 'The given slots are not available.' });
         }
 
+        const guestCount = parseInt(guests);
         const booking = await prisma.hotelBooking.create({
             data: {
                 userId: userId,
                 hotelId: parseInt(hotelId),
                 checkIn: new Date(checkIn),
                 checkOut: new Date(checkOut),
-                guestCount: parseInt(guests),
+                guestCount
             },
         });
+
+        for (let i = 0; i < guestCount; i++) {
+            await prisma.hotelCheckIn.create({
+                data: {
+                    hotelBookingId: booking.id,
+                    aadhaarNumber: "",
+                },
+            });
+        }
+
         return res.json(booking);
     } catch (error) {
         return res.status(500).json({ error: "Something went wrong, please try again later." });

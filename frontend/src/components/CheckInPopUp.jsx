@@ -3,50 +3,53 @@ import useBooking from "../context/useBooking";
 import toast from "react-hot-toast";
 
 const CheckInPopUp = ({ selectedHotel, handleCloseModal }) => {
-    const defaultAadhaars = {};
-    for (let i = 0; i < selectedHotel.guestCount; i++) {
-        defaultAadhaars[i] = { hotelBookingId: 0, aadhaar: "" };
-    }
-
-    const [aadhaars, setAadhaars] = useState(defaultAadhaars);
+    const [aadhaars, setAadhaars] = useState([]);
 
     const handleResetCloseModal = () => {
         setAadhaars([]);
         handleCloseModal();
     };
 
-    const { aadhaarsResponse, getAadhaars, storeAadhaarsResponse, storeAadhaars } = useBooking();
+    const { aadhaarsResponse, getAadhaars, storeAadhaarsResponse, updateAadhaars } = useBooking();
 
     useEffect(() => {
         getAadhaars(selectedHotel.id);
     }, [selectedHotel]);
 
     const handleInputChange = (e) => {
+        const value = e.target.value.replace(/\D/g, "");
         setAadhaars((currentValue) => {
             const index = parseInt(e.target.name);
-            currentValue[index]["aadhaar"] += e.target.value;
-            return currentValue;
+            const newValue = structuredClone(currentValue);
+            newValue[index]["aadhaarNumber"] = value;
+            return newValue;
         });
     };
 
     const validateAllAadhaars = () => {
         for (let i = 0; i < aadhaars.length; i++) {
-            const aadhaar = aadhaars[i]["aadhaar"];
+            const aadhaar = aadhaars[i]["aadhaarNumber"];
             if (typeof aadhaar !== "string" || aadhaar.length !== 12 || !/^\d+$/.test(aadhaar)) {
+                toast.error("Invalid aadhaar number: " + aadhaar);
                 return false;
             }
-            toast.error("Invalid aadhaar number:", aadhaar);
-            return false;
         }
         return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("🚀 ~ CheckInPopUp.jsx:45 ~ handleSubmit ~ aadhaars:", aadhaars);
         if (validateAllAadhaars()) {
-            await storeAadhaars(selectedHotel.id, aadhaars);
+            await updateAadhaars({ aadhaars });
         }
     };
+
+    useEffect(() => {
+        if (aadhaarsResponse) {
+            setAadhaars(aadhaarsResponse);
+        }
+    }, [aadhaarsResponse]);
 
     useEffect(() => {
         if (storeAadhaarsResponse) {
@@ -61,18 +64,15 @@ const CheckInPopUp = ({ selectedHotel, handleCloseModal }) => {
                 <h3 className="text-xl font-semibold mb-4">Fill aadhaars of check-ins for hotel {selectedHotel.name}</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="max-h-100 overflow-y-auto pr-2">
-                        {Object.values(aadhaars).map((aadhaar, index) => {
-                            if (aadhaarsResponse?.[index]) {
-                                aadhaar["hotelBookingId"] = aadhaarsResponse?.[index]["hotelBookingId"];
-                                aadhaar["aadhaar"] = aadhaarsResponse?.[index]["aadhaarNumber"];
-                            }
-                            return (
-                                <div className="py-2" key={index}>
-                                    <label className="block text-sm font-medium text-gray-700">Aadhar-{index + 1}:</label>
-                                    <input type="text" name={index} value={aadhaars[index].aadhaar} onChange={handleInputChange} className="mt-1 p-2 border rounded-md w-full" required />
-                                </div>
-                            );
-                        })}
+                        {aadhaars &&
+                            aadhaars.map((aadhaar, index) => {
+                                return (
+                                    <div className="py-2" key={index}>
+                                        <label className="block text-sm font-medium text-gray-700">Aadhar-{index + 1}:</label>
+                                        <input type="text" name={index} value={aadhaar.aadhaarNumber} onChange={handleInputChange} className="mt-1 p-2 border rounded-md w-full" required />
+                                    </div>
+                                );
+                            })}
                         <div className="flex justify-end space-x-4">
                             <button type="button" onClick={handleResetCloseModal} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors duration-300">
                                 Close
