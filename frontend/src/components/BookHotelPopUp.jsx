@@ -46,6 +46,7 @@ const BookHotelPopUp = ({ selectedHotel, handleCloseModal, fetchBookings }) => {
 
     useEffect(() => {
         if (bookingResponse) {
+            toast.success("Successfully booked a hotel.");
             handleCloseModal();
             fetchBookings();
         }

@@ -39,7 +39,6 @@ const CheckInPopUp = ({ selectedHotel, handleCloseModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("🚀 ~ CheckInPopUp.jsx:45 ~ handleSubmit ~ aadhaars:", aadhaars);
         if (validateAllAadhaars()) {
             await updateAadhaars({ aadhaars });
         }
@@ -53,6 +52,7 @@ const CheckInPopUp = ({ selectedHotel, handleCloseModal }) => {
 
     useEffect(() => {
         if (storeAadhaarsResponse) {
+            toast.success("Successfully updated aadhaars.");
             handleCloseModal();
         }
     }, [storeAadhaarsResponse]);

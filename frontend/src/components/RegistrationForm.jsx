@@ -13,6 +13,7 @@ const RegistrationForm = () => {
         e.preventDefault();
         try {
             await register({ email, password }); // Register
+            toast.success("Successfully registered.");
             navigate("/");
         } catch (error) {
             if (error.response && error.response.status === 409) {

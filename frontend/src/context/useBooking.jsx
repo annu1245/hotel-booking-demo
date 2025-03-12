@@ -13,7 +13,6 @@ export default function useBooking() {
         try {
             const response = await axiosInstance.post("/api/booking", payload);
             setBookingResponse(response);
-            toast.success("Hotel booked");
         } catch (error) {
             if (error.response && error.response.data.error) {
                 toast.error(error.response.data.error);

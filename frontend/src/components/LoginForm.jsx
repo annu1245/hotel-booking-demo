@@ -13,6 +13,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await login({ email, password }); // Login
+            toast.success("Successfully logged in.");
             navigate("/");
         } catch (error) {
             if (error.response && error.response.status === 400) {
